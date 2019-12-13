@@ -17,6 +17,8 @@ import java.util.List;
 @Route("")
 @PWA(name = "Project Base for Vaadin", shortName = "Project Base")
 public class MainView extends VerticalLayout {
+    private MyHierarchicalDataProvider container = null;
+    private String folderName = null;
 
     public MainView() {
         add(buildLabel());
@@ -34,9 +36,6 @@ public class MainView extends VerticalLayout {
         textArea.setWidth("600px");
         return textArea;
     }
-
-    MyHierarchicalDataProvider container = null;
-    String folder = null;
 
     private TreeGrid<String> buildVaadinFolderTree() {
         TreeGrid<String> treeGrid = new TreeGrid<>(String.class);
@@ -61,8 +60,8 @@ public class MainView extends VerticalLayout {
     }
 
      private void onDrop(GridDropEvent<String> e) {
-        final Folder originalParent = container.getParent(folder);
-        final Folder draggedFolder = container.findFolderByName(folder);
+        final Folder originalParent = container.getParent(folderName);
+        final Folder draggedFolder = container.findFolderByName(folderName);
         final Folder targetFolder = container.findFolderByName(e.getDropTargetItem().orElse(null));
 
         if(targetFolder == draggedFolder) {
@@ -75,10 +74,10 @@ public class MainView extends VerticalLayout {
     }
 
     private void onDragEnd(GridDragEndEvent<String> e) {
-        folder = null;
+        folderName = null;
     }
 
     private void onDragStart(GridDragStartEvent<String> e) {
-        folder = e.getDraggedItems().get(0);
+        folderName = e.getDraggedItems().get(0);
     }
 }
